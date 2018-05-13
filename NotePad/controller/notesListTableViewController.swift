@@ -82,6 +82,8 @@ class notesListTableViewController: UITableViewController {
     
     //MARK: - Table view Delegate
     
+    
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "goToNote", sender: self)
     }
