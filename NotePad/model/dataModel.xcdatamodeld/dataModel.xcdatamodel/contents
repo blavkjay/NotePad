@@ -3,8 +3,14 @@
     <entity name="Notes" representedClassName="Notes" syncable="YES" codeGenerationType="class">
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="notesDetails" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="NotesDetails" inverseName="mainName" inverseEntity="NotesDetails" syncable="YES"/>
+    </entity>
+    <entity name="NotesDetails" representedClassName="NotesDetails" syncable="YES" codeGenerationType="class">
+        <attribute name="notesDetails" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="mainName" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Notes" inverseName="notesDetails" inverseEntity="Notes" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Notes" positionX="-63" positionY="333" width="128" height="73"/>
+        <element name="Notes" positionX="4194" positionY="-891" width="128" height="88"/>
+        <element name="NotesDetails" positionX="3976" positionY="-880" width="128" height="73"/>
     </elements>
 </model>

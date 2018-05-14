@@ -7,17 +7,66 @@
 //
 
 import UIKit
+import CoreData
 
-class ViewController: UIViewController {
+class ViewController: UIViewController,UITextViewDelegate {
 
+    var editableNote = [NotesDetails]()
+    
+    @IBOutlet weak var textView: UITextView!
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+   
+    @IBAction func saveButtonPressed(_ sender: UIButton) {
+        
+        let newNote = NotesDetails(context: self.context)
+        newNote.notesDetails = textView.text!
+       self.editableNote.append(newNote)
+        self.saveData()
+        
+    }
     var selectedNote : Notes? {
         didSet{
-            
+            loadData()
         }
     }
+    
+    func loadData(with request:NSFetchRequest<NotesDetails>=NotesDetails.fetchRequest(),predicate: NSPredicate? = nil){
+        
+        let NotesPredicate = NSPredicate(format: "mainName.name MATCHES %@", selectedNote!.name!)
+        if let additionalPredicate = predicate {
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [NotesPredicate,additionalPredicate])
+        }else{
+            request.predicate = NotesPredicate
+        }
+        
+        do {
+            editableNote = try context.fetch(request)
+        }
+        catch
+        {
+            print("error \(error)")
+        }
+        
+    }
+    
+    func saveData(){
+        do{
+            try context.save()
+        } catch{
+            print("error \(error)")
+        }
+    }
+    
+    
+    
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        textView.delegate = self 
     }
 
     override func didReceiveMemoryWarning() {
