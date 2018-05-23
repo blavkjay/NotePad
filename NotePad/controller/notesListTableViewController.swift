@@ -12,7 +12,6 @@ class notesListTableViewController: UITableViewController {
 
     var notes = [Notes]()
     
-    let defaults = UserDefaults.standard
     let context = (UIApplication.shared.delegate as!AppDelegate).persistentContainer.viewContext
     
 
@@ -22,6 +21,7 @@ class notesListTableViewController: UITableViewController {
         loadData()
 
     }
+    
     //MARK: - Add new Notes
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {

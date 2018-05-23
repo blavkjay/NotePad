@@ -18,8 +18,21 @@ class ViewController: UIViewController,UITextViewDelegate {
    
     @IBAction func saveButtonPressed(_ sender: UIBarButtonItem) {
         
+        let newNote = NotesDetails(context: self.context)
+        newNote.notesDetails = textView.text!
+        newNote.parentNoteList = self.selectedNote
+        self.editableNote.append(newNote)
+        self.saveData()
+        
     }
     
+    func textViewDidEndEditing(_ textView: UITextView) {
+        let newNote = NotesDetails(context: self.context)
+        newNote.notesDetails = textView.text!
+        newNote.parentNoteList = self.selectedNote
+        self.editableNote.append(newNote)
+        self.saveData()
+    }
     var selectedNote : Notes? {
         didSet{
             loadData()
@@ -28,13 +41,9 @@ class ViewController: UIViewController,UITextViewDelegate {
     
     func loadData(with request:NSFetchRequest<NotesDetails>=NotesDetails.fetchRequest(),predicate: NSPredicate? = nil){
         
-        let NotesPredicate = NSPredicate(format: "mainName.name MATCHES %@", selectedNote!.name!)
-        if let additionalPredicate = predicate {
-            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [NotesPredicate,additionalPredicate])
-        }else{
-            request.predicate = NotesPredicate
-        }
-        
+        let NotesPredicate = NSPredicate(format: "parentNoteList.name MATCHES %@", selectedNote!.name!)
+       
+        request.predicate = NotesPredicate
         do {
             editableNote = try context.fetch(request)
         }
@@ -62,7 +71,11 @@ class ViewController: UIViewController,UITextViewDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        textView.delegate = self 
+        textView.delegate = self
+        loadData()
+        for notess in editableNote{
+            textView.text = notess.notesDetails
+        }
     }
 
     override func didReceiveMemoryWarning() {
