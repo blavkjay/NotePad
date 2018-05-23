@@ -16,14 +16,10 @@ class ViewController: UIViewController,UITextViewDelegate {
     @IBOutlet weak var textView: UITextView!
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
    
-    @IBAction func saveButtonPressed(_ sender: UIButton) {
-        
-        let newNote = NotesDetails(context: self.context)
-        newNote.notesDetails = textView.text!
-       self.editableNote.append(newNote)
-        self.saveData()
+    @IBAction func saveButtonPressed(_ sender: UIBarButtonItem) {
         
     }
+    
     var selectedNote : Notes? {
         didSet{
             loadData()
