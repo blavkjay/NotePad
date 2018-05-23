@@ -17,25 +17,21 @@ class ViewController: UIViewController,UITextViewDelegate {
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
    
     @IBAction func saveButtonPressed(_ sender: UIBarButtonItem) {
-        
-        let newNote = NotesDetails(context: self.context)
-        newNote.notesDetails = textView.text!
-        newNote.parentNoteList = self.selectedNote
-        self.editableNote.append(newNote)
-        self.saveData()
-        
+      HoldData()
     }
-    
     func textViewDidEndEditing(_ textView: UITextView) {
-        let newNote = NotesDetails(context: self.context)
-        newNote.notesDetails = textView.text!
-        newNote.parentNoteList = self.selectedNote
-        self.editableNote.append(newNote)
-        self.saveData()
+        HoldData()
     }
     var selectedNote : Notes? {
         didSet{
             loadData()
+        }
+    }
+    func saveData(){
+        do{
+            try context.save()
+        } catch{
+            print("error \(error)")
         }
     }
     
@@ -54,19 +50,6 @@ class ViewController: UIViewController,UITextViewDelegate {
         
     }
     
-    func saveData(){
-        do{
-            try context.save()
-        } catch{
-            print("error \(error)")
-        }
-    }
-    
-    
-    
-    
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -78,9 +61,12 @@ class ViewController: UIViewController,UITextViewDelegate {
         }
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func HoldData(){
+        let newNote = NotesDetails(context: self.context)
+        newNote.notesDetails = textView.text!
+        newNote.parentNoteList = self.selectedNote
+        self.editableNote.append(newNote)
+        self.saveData()
     }
 
 
