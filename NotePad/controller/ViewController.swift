@@ -19,6 +19,10 @@ class ViewController: UIViewController,UITextViewDelegate {
     @IBAction func saveButtonPressed(_ sender: UIBarButtonItem) {
       HoldData()
     }
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        
+        print("TextField editing")
+    }
     func textViewDidEndEditing(_ textView: UITextView) {
         HoldData()
     }
